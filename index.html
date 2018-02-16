@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <style>
+.progress-bar-cont {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  height: 10px;
+  width: 500px;
+}
+.progress-bar {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 10px;
+  background: green;
+}
+    </style>
+  </head>
+  <body>
+    <div class="progress-bar-cont">
+      <div id="progress-bar" class="progress-bar"></div>
+    </div>
+    <script>
+const length = 10e5;
+
+const progressSync = () => {
+  for (let counter = 0; counter < length; counter++) {
+    const progress = counter / length * 100;
+    document.getElementById('progress-bar').style.width = `${progress}%`;
+  }
+}
+
+const progressAsync = () => {
+  let counter = 0;
+  const delta = 1000;
+  const onNextFrame = () => {
+    const progress = counter / length * 100;
+    if (progress <= 100) {
+      document.getElementById('progress-bar').style.width = `${progress}%`;
+      counter += delta;
+      requestAnimationFrame(onNextFrame);
+    }
+  }
+  requestAnimationFrame(onNextFrame);
+}
+
+const onLoad = () => {
+  progressAsync();
+}
+window.addEventListener('load', onLoad, false);
+    </script>
+  </body>
+</html>
